@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My First Application</string>
+    <string name="to_do_text">Add new item</string>
+    <string name="view_list_text">View todo list</string>
+</resources>
