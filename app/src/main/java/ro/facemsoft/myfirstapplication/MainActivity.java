@@ -3,6 +3,7 @@ package ro.facemsoft.myfirstapplication;
 import android.content.Intent;
 import android.drm.DrmStore;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.Date;
+
+import ro.facemsoft.myfirstapplication.models.ToDoItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(this, "Toast de test", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(MainActivity.this, AddTodoActivity.class);
         intent.putExtra("today", new Date());
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 1 && resultCode == RESULT_OK) {
+            ToDoItem item = (ToDoItem) data.getSerializableExtra("item");
+            Toast.makeText(MainActivity.this,
+                    item.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 }

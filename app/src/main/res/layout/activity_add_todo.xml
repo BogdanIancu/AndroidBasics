@@ -28,11 +28,13 @@
     </android.support.design.widget.TextInputLayout>
 
     <EditText
+        android:id="@+id/date_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/item_due_date"
         android:inputType="date"
-        android:enabled="false"/>
+        android:focusable="false"
+        android:onClick="displayDatePickerDialog" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -51,9 +53,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_save_black_24dp"
+        android:paddingHorizontal="@dimen/margin"
         android:text="@string/save_text"
         android:layout_marginTop="32dp"
         android:background="@color/colorPrimaryDark"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:onClick="saveData"/>
 
 </LinearLayout>

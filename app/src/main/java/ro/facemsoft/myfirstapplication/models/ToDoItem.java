@@ -1,8 +1,9 @@
 package ro.facemsoft.myfirstapplication.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ToDoItem {
+public class ToDoItem implements Serializable {
     public enum Priority { low, medium, high}
 
     private String title;
@@ -58,5 +59,17 @@ public class ToDoItem {
 
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("ToDoItem{");
+        sb.append("title='").append(title).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", dueDate=").append(dueDate);
+        sb.append(", creationDate=").append(creationDate);
+        sb.append(", priority=").append(priority);
+        sb.append('}');
+        return sb.toString();
     }
 }
