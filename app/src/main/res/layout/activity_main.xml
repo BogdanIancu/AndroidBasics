@@ -10,6 +10,10 @@
         android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:drawableStart="@drawable/ic_add_black_24dp"
+        android:drawablePadding="8dp"
+        android:paddingRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
@@ -17,10 +21,14 @@
         android:text="@string/to_do_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
         android:id="@+id/button_list"
+        android:drawableStart="@drawable/list_icon"
+        android:drawablePadding="8dp"
+        android:paddingRight="8dp"
+        android:background="@color/colorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
