@@ -1,7 +1,9 @@
 package ro.facemsoft.myfirstapplication;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import ro.facemsoft.myfirstapplication.database.DbConstants;
+import ro.facemsoft.myfirstapplication.database.DbHelper;
 import ro.facemsoft.myfirstapplication.models.ToDoItem;
 
 public class AddTodoActivity extends AppCompatActivity {
@@ -92,6 +96,20 @@ public class AddTodoActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.putExtra("item", item);
             setResult(RESULT_OK, intent);
+
+            DbHelper dbHelper =
+                    new DbHelper(AddTodoActivity.this);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(DbConstants.Items.COLUMN_TITLE, item.getTitle());
+            cv.put(DbConstants.Items.COLUMN_DESC, item.getDescription());
+            cv.put(DbConstants.Items.COLUMN_DUE_DATE,
+                    sdf.format(item.getDueDate()));
+            cv.put(DbConstants.Items.COLUMN_PRIORITY,
+                    item.getPriority().toString());
+            db.insert(DbConstants.Items.TABLE_NAME, null, cv);
+            db.close();
+
             finish();
         }
     }
