@@ -28,40 +28,56 @@ public class ToDoListActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.list_view);
 
-        ArrayList<ToDoItem> list = new ArrayList<>();
+        final ArrayList<ToDoItem> list = new ArrayList<>();
 
-        DbHelper dbHelper = new DbHelper(ToDoListActivity.this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        new Thread((new Runnable() {
+            @Override
+            public void run() {
+                DbHelper dbHelper = new DbHelper(ToDoListActivity.this);
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor c =
-                db.rawQuery("SELECT * FROM " + DbConstants.Items.TABLE_NAME, null);
-        while(c.moveToNext()) {
-            int index = c.getColumnIndex(DbConstants.Items.COLUMN_TITLE);
-            String title = c.getString(index);
-            index = c.getColumnIndex(DbConstants.Items.COLUMN_DESC);
-            String description = c.getString(index);
-            index = c.getColumnIndex(DbConstants.Items.COLUMN_DUE_DATE);
-            String dueDate = c.getString(index);
-            index = c.getColumnIndex(DbConstants.Items.COLUMN_PRIORITY);
-            String priority = c.getString(index);
+                Cursor c =
+                        db.rawQuery("SELECT * FROM " + DbConstants.Items.TABLE_NAME, null);
+                while(c.moveToNext()) {
+                    int index = c.getColumnIndex(DbConstants.Items.COLUMN_TITLE);
+                    String title = c.getString(index);
+                    index = c.getColumnIndex(DbConstants.Items.COLUMN_DESC);
+                    String description = c.getString(index);
+                    index = c.getColumnIndex(DbConstants.Items.COLUMN_DUE_DATE);
+                    String dueDate = c.getString(index);
+                    index = c.getColumnIndex(DbConstants.Items.COLUMN_PRIORITY);
+                    String priority = c.getString(index);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date date= null;
-            try {
-                date = sdf.parse(dueDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    Date date= null;
+                    try {
+                        date = sdf.parse(dueDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    ToDoItem item = new ToDoItem(title, description, date, new Date(),
+                            ToDoItem.Priority.valueOf(priority));
+                    list.add(item);
+                }
+                db.close();
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToDoItemAdapter adapter =
+                                new ToDoItemAdapter(ToDoListActivity.this,
+                                        R.layout.item_template,
+                                        list);
+                        listView.setAdapter(adapter);
+                    }
+                });
             }
-            ToDoItem item = new ToDoItem(title, description, date, new Date(),
-                    ToDoItem.Priority.valueOf(priority));
-            list.add(item);
-        }
-
-
-        ToDoItemAdapter adapter =
-                new ToDoItemAdapter(ToDoListActivity.this,
-                        R.layout.item_template,
-                        list);
-        listView.setAdapter(adapter);
+        })).start();
     }
 }

@@ -23,6 +23,7 @@ import java.util.Date;
 import ro.facemsoft.myfirstapplication.database.DbConstants;
 import ro.facemsoft.myfirstapplication.database.DbHelper;
 import ro.facemsoft.myfirstapplication.models.ToDoItem;
+import ro.facemsoft.myfirstapplication.workers.DbInsertWorker;
 
 public class AddTodoActivity extends AppCompatActivity {
 
@@ -97,18 +98,8 @@ public class AddTodoActivity extends AppCompatActivity {
             intent.putExtra("item", item);
             setResult(RESULT_OK, intent);
 
-            DbHelper dbHelper =
-                    new DbHelper(AddTodoActivity.this);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues cv = new ContentValues();
-            cv.put(DbConstants.Items.COLUMN_TITLE, item.getTitle());
-            cv.put(DbConstants.Items.COLUMN_DESC, item.getDescription());
-            cv.put(DbConstants.Items.COLUMN_DUE_DATE,
-                    sdf.format(item.getDueDate()));
-            cv.put(DbConstants.Items.COLUMN_PRIORITY,
-                    item.getPriority().toString());
-            db.insert(DbConstants.Items.TABLE_NAME, null, cv);
-            db.close();
+            DbInsertWorker worker = new DbInsertWorker(AddTodoActivity.this, item);
+            worker.start();
 
             finish();
         }
