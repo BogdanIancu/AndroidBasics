@@ -1,11 +1,14 @@
 package ro.facemsoft.myfirstapplication.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class ToDoItem implements Serializable {
     public enum Priority { low, medium, high}
 
+    public Bitmap image;
     private String title;
     private String description;
     private Date dueDate;

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -27,6 +28,7 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_template, null);
         }
+        ImageView imageView = convertView.findViewById(R.id.image_view);
         TextView titleTextView =
                 convertView.findViewById(R.id.title_text_view);
         TextView detailsTextView =
@@ -42,6 +44,7 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         dueDateTextView.setText(sdf.format(item.getDueDate()));
         priorityTextView.setText(item.getPriority().toString());
+        imageView.setImageBitmap(item.image);
 
         return convertView;
     }
